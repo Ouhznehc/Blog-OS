@@ -6,12 +6,18 @@
 
 use core::panic::PanicInfo;
 use blog_os::println;
+use bootloader::{BootInfo, entry_point};
 
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
+entry_point!(kernel_main);
+
+fn kernel_main(boot_info: &'static BootInfo) -> ! {
+    use blog_os::memory::active_level_4_table;
+    use blog_os::memory::translate_addr;
+    use x86_64::VirtAddr;
+
     println!("Hello World{}", "!");
-
     blog_os::init();
+
 
 
     #[cfg(test)]
